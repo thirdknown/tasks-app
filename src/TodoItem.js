@@ -5,4 +5,4 @@ class TodoItem extends React.Component {
 
 }
 
-export default TodoList;
+export default TodoItem;
