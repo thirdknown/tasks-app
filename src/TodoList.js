@@ -1,5 +1,6 @@
 import React from 'react';
 import NewItem from "./NewItem";
+import TodoItem from "./TodoItem";
 
 class TodoList extends React.Component {
 
@@ -37,7 +38,11 @@ class TodoList extends React.Component {
     }
 
     renderItem(todoItemEntity) {
-        return <li key={todoItemEntity.id}>{todoItemEntity.name}</li>
+        return (
+            <li key={todoItemEntity.id}>
+                <TodoItem todoItemEntity={todoItemEntity} />
+            </li>
+        )
     }
 
     onItemCreate(todoItemEntity) {
