@@ -37,7 +37,7 @@ class TodoList extends React.Component {
     }
 
     renderItem(todoItemEntity) {
-        return <li key={todoItemEntity.name}>{todoItemEntity.name}</li>
+        return <li key={todoItemEntity.id}>{todoItemEntity.name}</li>
     }
 
     onItemCreate(todoItemEntity) {
