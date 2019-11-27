@@ -5,7 +5,10 @@ class TodoItem extends React.Component {
 
     render() {
         return(
-            <div>{this.props.todoItemEntity.name}</div>
+            <div>
+                {this.props.todoItemEntity.name}
+                <button onClick={() => this.props.onItemDelete(this.props.todoItemEntity)}>Smazat</button>
+            </div>
         )
     }
 

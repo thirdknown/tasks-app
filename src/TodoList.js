@@ -8,6 +8,7 @@ class TodoList extends React.Component {
         super(props);
 
         this.onItemCreate = this.onItemCreate.bind(this);
+        this.onItemDelete = this.onItemDelete.bind(this);
         this.renderItems = this.renderItems.bind(this);
 
         this.state = {
@@ -40,7 +41,7 @@ class TodoList extends React.Component {
     renderItem(todoItemEntity) {
         return (
             <li key={todoItemEntity.id}>
-                <TodoItem todoItemEntity={todoItemEntity} />
+                <TodoItem todoItemEntity={todoItemEntity} onItemDelete={this.onItemDelete} />
             </li>
         )
     }
@@ -49,6 +50,14 @@ class TodoList extends React.Component {
         this.setState((previousState) => {
             previousState.todoItemEntities.push(todoItemEntity);
             return {todoItemEntities: previousState.todoItemEntities}
+        })
+    }
+
+    onItemDelete(todoItemEntityForDelete) {
+        this.setState((previousState) => {
+            return {todoItemEntities: previousState.todoItemEntities.filter((todoItemEntity) => {
+                return todoItemEntity.id !== todoItemEntityForDelete.id;
+            })}
         })
     }
 
