@@ -47,7 +47,8 @@ class TodoList extends React.Component {
 
     onItemCreate(todoItemEntity) {
         this.setState((previousState) => {
-            return {state: previousState.todoItemEntities.push(todoItemEntity)}
+            previousState.todoItemEntities.push(todoItemEntity);
+            return {todoItemEntities: previousState.todoItemEntities}
         })
     }
 
