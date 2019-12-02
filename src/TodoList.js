@@ -1,6 +1,7 @@
 import React from 'react';
 import NewItem from "./NewItem";
 import TodoItem from "./TodoItem";
+import Calls from "./model/Calls";
 
 class TodoList extends React.Component {
 
@@ -14,6 +15,13 @@ class TodoList extends React.Component {
         this.state = {
             todoItemEntities: []
         };
+    }
+
+    async componentDidMount() {
+        const todoItemEntities = await Calls.getShoppingList();
+        this.setState({
+            todoItemEntities: todoItemEntities
+        });
     }
 
     render() {
@@ -33,7 +41,7 @@ class TodoList extends React.Component {
 
         return (
             <div>
-                <div>Aktuální počet položek: {this.state.todoItemEntities.length}</div>
+                <div>{this.state.todoItemEntities.length > 0 ? 'Aktuální počet položek: ' + this.state.todoItemEntities.length : ''}</div>
                 <ul>{itemList}</ul>
             </div>
         )
@@ -47,11 +55,13 @@ class TodoList extends React.Component {
         )
     }
 
-    onItemCreate(todoItemEntity) {
+    async onItemCreate(todoItemEntity) {
+        todoItemEntity = await Calls.createShoppingItem(todoItemEntity);
+
         this.setState((previousState) => {
             previousState.todoItemEntities.push(todoItemEntity);
             return {todoItemEntities: previousState.todoItemEntities}
-        })
+        });
     }
 
     onItemDelete(todoItemEntityForDelete) {

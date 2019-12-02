@@ -1,6 +1,5 @@
 import React from 'react';
 import TodoItemEntity from "./model/TodoItemEntity";
-import UniqueIdGenerator from "./model/UniqueIdGenerator";
 
 class NewItem extends React.Component {
 
@@ -23,10 +22,7 @@ class NewItem extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.onItemCreate(new TodoItemEntity(
-            UniqueIdGenerator.getUniqueId(),
-            this.state.text
-        ));
+        this.props.onItemCreate(new TodoItemEntity(this.state.text));
     }
 
     render() {
