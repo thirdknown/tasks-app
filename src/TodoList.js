@@ -33,6 +33,7 @@ class TodoList extends React.Component {
 
         return (
             <div>
+                <div>Aktuální počet položek: {this.state.todoItemEntities.length}</div>
                 <ul>{itemList}</ul>
             </div>
         )
