@@ -64,7 +64,10 @@ class TodoList extends React.Component {
         });
     }
 
-    onItemDelete(todoItemEntityForDelete) {
+    async onItemDelete(todoItemEntityForDelete) {
+
+        todoItemEntityForDelete = await Calls.deleteShoppingItem(todoItemEntityForDelete);
+
         this.setState((previousState) => {
             return {todoItemEntities: previousState.todoItemEntities.filter((todoItemEntity) => {
                 return todoItemEntity.id !== todoItemEntityForDelete.id;
