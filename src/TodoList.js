@@ -10,6 +10,7 @@ class TodoList extends React.Component {
 
         this.onItemCreate = this.onItemCreate.bind(this);
         this.onItemDelete = this.onItemDelete.bind(this);
+        this.onItemEdit = this.onItemEdit.bind(this);
         this.renderItems = this.renderItems.bind(this);
 
         this.state = {
@@ -50,7 +51,7 @@ class TodoList extends React.Component {
     renderItem(todoItemEntity) {
         return (
             <li key={todoItemEntity.id}>
-                <TodoItem todoItemEntity={todoItemEntity} onItemDelete={this.onItemDelete} />
+                <TodoItem todoItemEntity={todoItemEntity} onItemDelete={this.onItemDelete} onItemEdit={this.onItemEdit} />
             </li>
         )
     }
@@ -73,6 +74,10 @@ class TodoList extends React.Component {
                 return todoItemEntity.id !== todoItemEntityForDelete.id;
             })}
         })
+    }
+
+    async onItemEdit(todoItemEntity) {
+        todoItemEntity = await Calls.updateShoppingItem(todoItemEntity);
     }
 
 }
