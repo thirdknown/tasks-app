@@ -6,30 +6,23 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
+import MediaCardOwnContent from "./MediaCardOwnContent";
 
 export default function MediaCard(props) {
+
+    const content = <>
+        <Typography gutterBottom variant="h5" component="h2">
+            {props.title}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+            {props.description}
+        </Typography>
+    </>
+
     return (
-        <Card>
-            <CardActionArea>
-                <CardContent onClick={props.contentClicked}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {props.title}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {props.description}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActions>
-                <Grid container justify="space-between">
-                    <Grid item>
-                        {props.leftActions}
-                    </Grid>
-                    <Grid item>
-                        {props.rightActions}
-                    </Grid>
-                </Grid>
-            </CardActions>
-        </Card>
+        <MediaCardOwnContent
+            content={content}
+            {...props}
+        />
     );
 }
