@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import Switch from "@material-ui/core/Switch";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -71,15 +71,48 @@ export default function TodosBar(props) {
 
     const toggleSearchDone = () => {
         let searchEntity = props.searchEntity;
-        searchEntity.done = !searchEntity.done;
+        searchEntity.setNextValueForDone();
         props.onSearch(searchEntity);
     };
 
     const toggleSearchStarred = () => {
         let searchEntity = props.searchEntity;
-        searchEntity.starred = !searchEntity.starred;
+        searchEntity.setNextValueForStarred();
         props.onSearch(searchEntity);
     };
+
+    const getDoneCheckbox = () => {
+        let searchEntity = props.searchEntity;
+        return getCheckbox(searchEntity.done, toggleSearchDone);
+    };
+
+    const getStarredCheckbox = () => {
+        let searchEntity = props.searchEntity;
+        return getCheckbox(searchEntity.starred, toggleSearchStarred);
+    };
+
+    const getCheckbox = (value, onChange) => {
+        let checkboxProps = {
+            onChange: onChange,
+            color: 'secondary',
+            inputProps: { 'aria-label': 'default checkbox' }
+        };
+
+        if (value === null) {
+            checkboxProps.checked = false;
+        }
+
+        if (value === false) {
+            checkboxProps.checked = true;
+            checkboxProps.indeterminate = true;
+        }
+
+        if (value === true) {
+            checkboxProps.checked = true;
+        }
+
+        return <Checkbox {...checkboxProps} />
+    }
 
     return (
         <div className={classes.root}>
@@ -108,24 +141,14 @@ export default function TodosBar(props) {
 
                     <div>
                         <span>Hotové: </span>
-                        <Switch
-                            checked={props.searchEntity.done}
-                            onChange={toggleSearchDone}
-                            color="default"
-                            inputProps={{ 'aria-label': 'default checkbox' }}
-                        />
+                        {getDoneCheckbox()}
                     </div>
 
                     <div className={classes.gap} />
 
                     <div>
                         <span>S hvězdou: </span>
-                        <Switch
-                            checked={props.searchEntity.starred}
-                            onChange={toggleSearchStarred}
-                            color="default"
-                            inputProps={{ 'aria-label': 'default checkbox' }}
-                        />
+                        {getStarredCheckbox()}
                     </div>
 
                 </Toolbar>

@@ -22,7 +22,7 @@ class TodoList extends React.Component {
         this.state = {
             originalTodoItemEntities: [],
             todoItemEntities: [],
-            searchEntity: new SearchEntity('', false, false)
+            searchEntity: new SearchEntity('', null, null)
         };
     }
 
@@ -106,16 +106,12 @@ class TodoList extends React.Component {
 
                 let isSatisfing = true;
 
-                if (searchEntity.starred === true && searchEntity.done === true) {
-                    isSatisfing = isSatisfing && todoItemEntity.starred === true && todoItemEntity.done === true
+                if (searchEntity.starred !== null) {
+                    isSatisfing = isSatisfing && searchEntity.starred === todoItemEntity.starred
                 }
 
-                if (searchEntity.starred === true) {
-                    isSatisfing = isSatisfing && todoItemEntity.starred === true;
-                }
-
-                if (searchEntity.done === true) {
-                    isSatisfing = isSatisfing && todoItemEntity.done === true;
+                if (searchEntity.done !== null) {
+                    isSatisfing = isSatisfing && searchEntity.done === todoItemEntity.done
                 }
 
                 if (searchEntity.text !== '') {
