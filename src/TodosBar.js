@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -54,10 +55,31 @@ const useStyles = makeStyles(theme => ({
             },
         },
     },
+    gap: {
+        width: theme.spacing(1)
+    }
 }));
 
-export default function TodosBar() {
+export default function TodosBar(props) {
     const classes = useStyles();
+
+    const searchText = (e) => {
+        let searchEntity = props.searchEntity;
+        searchEntity.text = e.target.value;
+        props.onSearch(searchEntity);
+    };
+
+    const toggleSearchDone = () => {
+        let searchEntity = props.searchEntity;
+        searchEntity.done = !searchEntity.done;
+        props.onSearch(searchEntity);
+    };
+
+    const toggleSearchStarred = () => {
+        let searchEntity = props.searchEntity;
+        searchEntity.starred = !searchEntity.starred;
+        props.onSearch(searchEntity);
+    };
 
     return (
         <div className={classes.root}>
@@ -71,14 +93,41 @@ export default function TodosBar() {
                             <SearchIcon />
                         </div>
                         <InputBase
+                            value={props.searchEntity.text}
                             placeholder="Vyhledat…"
                             classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
                             inputProps={{ 'aria-label': 'vyhledat' }}
+                            onChange={searchText}
                         />
                     </div>
+
+                    <div className={classes.gap} />
+
+                    <div>
+                        <span>Hotové: </span>
+                        <Switch
+                            checked={props.searchEntity.done}
+                            onChange={toggleSearchDone}
+                            color="default"
+                            inputProps={{ 'aria-label': 'default checkbox' }}
+                        />
+                    </div>
+
+                    <div className={classes.gap} />
+
+                    <div>
+                        <span>S hvězdou: </span>
+                        <Switch
+                            checked={props.searchEntity.starred}
+                            onChange={toggleSearchStarred}
+                            color="default"
+                            inputProps={{ 'aria-label': 'default checkbox' }}
+                        />
+                    </div>
+
                 </Toolbar>
             </AppBar>
         </div>

@@ -7,6 +7,7 @@ import TodosBar from "./TodosBar";
 import NewItem from "./NewItem";
 import PaperWrapper from "./PaperWrapper";
 import Grid from "@material-ui/core/Grid";
+import SearchEntity from "./model/SearchEntity";
 
 class TodoList extends React.Component {
 
@@ -16,15 +17,19 @@ class TodoList extends React.Component {
         this.onItemCreate = this.onItemCreate.bind(this);
         this.onItemDelete = this.onItemDelete.bind(this);
         this.onItemEdit = this.onItemEdit.bind(this);
+        this.onSearch = this.onSearch.bind(this);
 
         this.state = {
-            todoItemEntities: []
+            originalTodoItemEntities: [],
+            todoItemEntities: [],
+            searchEntity: new SearchEntity('', false, false)
         };
     }
 
     async componentDidMount() {
         const todoItemEntities = await Calls.getShoppingList();
         this.setState({
+            originalTodoItemEntities: todoItemEntities,
             todoItemEntities: todoItemEntities
         });
     }
@@ -34,7 +39,7 @@ class TodoList extends React.Component {
         return (
 
             <div>
-                <TodosBar />
+                <TodosBar searchEntity={this.state.searchEntity} onSearch={this.onSearch} />
 
                 <Container maxWidth="lg">
 
@@ -90,6 +95,42 @@ class TodoList extends React.Component {
 
     async onItemEdit(todoItemEntity) {
         todoItemEntity = await Calls.updateShoppingItem(todoItemEntity);
+    }
+
+    onSearch(searchEntity) {
+        this.setState({
+            searchEntity: searchEntity
+        }, () => {
+            let searchEntity = this.state.searchEntity;
+            let filteredTodoItemEntities = this.state.originalTodoItemEntities.filter((todoItemEntity) => {
+
+                let isSatisfing = true;
+
+                if (searchEntity.starred === true && searchEntity.done === true) {
+                    isSatisfing = isSatisfing && todoItemEntity.starred === true && todoItemEntity.done === true
+                }
+
+                if (searchEntity.starred === true) {
+                    isSatisfing = isSatisfing && todoItemEntity.starred === true;
+                }
+
+                if (searchEntity.done === true) {
+                    isSatisfing = isSatisfing && todoItemEntity.done === true;
+                }
+
+                if (searchEntity.text !== '') {
+                    const searchedText = searchEntity.text.toLowerCase();
+                    isSatisfing = isSatisfing && (todoItemEntity.name.toLowerCase().match(searchedText)
+                        || todoItemEntity.description.toLowerCase().match(searchedText))
+                }
+
+                return isSatisfing;
+            });
+
+            this.setState( {
+                todoItemEntities: filteredTodoItemEntities
+            });
+        });
     }
 
 }
