@@ -63,12 +63,16 @@ class TodoItem extends React.Component {
         this.enableShowMode();
     }
 
-    stornoEdit() {
+    replaceDraftTodoItemEntityByTodoItemEntity() {
         this.setState((previousState) => {
             return {
                 draftTodoItemEntity: Object.assign({}, previousState.todoItemEntity)
             }
         });
+    }
+
+    stornoEdit() {
+        this.replaceDraftTodoItemEntityByTodoItemEntity();
         this.enableShowMode();
     }
 
@@ -115,8 +119,11 @@ class TodoItem extends React.Component {
 
             this.props.onItemEdit(todoItemEntity);
 
-            return {todoItemEntity: todoItemEntity}
-        })
+            return {
+                todoItemEntity: todoItemEntity,
+                draftTodoItemEntity: Object.assign({}, todoItemEntity)
+            }
+        });
     }
 
     renderShowMode() {
