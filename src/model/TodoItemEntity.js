@@ -4,11 +4,13 @@ export default class TodoItemEntity {
     name;
     description;
     done;
+    starred;
 
-    constructor(name, description, done) {
+    constructor(name, description, done, starred) {
         this.name = name;
         this.description = description;
         this.done = done;
+        this.starred = starred;
     }
 
 }

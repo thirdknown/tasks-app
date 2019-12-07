@@ -2,7 +2,7 @@ import React from 'react';
 import MediaCard from "./MediaCard";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import {Delete, StarBorder} from "@material-ui/icons";
+import {Delete, Star, StarBorder} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
 import MediaCardOwnContent from "./MediaCardOwnContent";
@@ -31,6 +31,7 @@ class TodoItem extends React.Component {
         this.stornoEdit = this.stornoEdit.bind(this);
         this.saveEdit = this.saveEdit.bind(this);
         this.toggleDone = this.toggleDone.bind(this);
+        this.toggleStarred = this.toggleStarred.bind(this);
     }
 
     enableEditMode() {
@@ -126,16 +127,29 @@ class TodoItem extends React.Component {
         });
     }
 
+    toggleStarred() {
+        this.setState((previousState) => {
+            let todoItemEntity = previousState.todoItemEntity;
+            todoItemEntity.starred = !todoItemEntity.starred;
+
+            this.props.onItemEdit(todoItemEntity);
+
+            return {
+                todoItemEntity: todoItemEntity,
+                draftTodoItemEntity: Object.assign({}, todoItemEntity)
+            }
+        });
+    }
+
     renderShowMode() {
         const showModeRightActions = <div>
-            <IconButton aria-label="star" size="small">
-                <StarBorder />
+            <IconButton aria-label="star" size="small" color="secondary" onClick={this.toggleStarred}>
+                {this.state.todoItemEntity.starred === true ? <Star /> : <StarBorder />}
             </IconButton>
 
             <Switch
                 checked={this.state.todoItemEntity.done}
                 onChange={this.toggleDone}
-
                 color="primary"
                 inputProps={{ 'aria-label': 'primary checkbox' }}
             />
