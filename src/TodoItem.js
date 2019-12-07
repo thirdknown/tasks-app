@@ -1,5 +1,9 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import MediaCard from "./MediaCard";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import {Delete, StarBorder} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
 
 class TodoItem extends React.Component {
 
@@ -11,48 +15,105 @@ class TodoItem extends React.Component {
 
         this.state = {
             mode: this.MODE_SHOW,
-            todoItemEntity: this.props.todoItemEntity
+            todoItemEntity: this.props.todoItemEntity,
+            draftTodoItemEntity: Object.assign({}, this.props.todoItemEntity)
         };
 
-        this.toggleMode = this.toggleMode.bind(this);
+        this.enableEditMode = this.enableEditMode.bind(this);
         this.onNameEdit = this.onNameEdit.bind(this);
+        this.stornoEdit = this.stornoEdit.bind(this);
+        this.saveEdit = this.saveEdit.bind(this);
     }
 
-    toggleMode() {
-
+    enableEditMode() {
         this.setState((previousState) => {
-            return {mode: previousState.mode === this.MODE_SHOW ? this.MODE_EDIT : this.MODE_SHOW}
+            return {
+                mode: this.MODE_EDIT,
+                previousTodoItemEntity: previousState.todoItemEntity
+            }
         });
+    }
+
+    enableShowMode() {
+        this.setState(() => {
+            return {mode: this.MODE_SHOW};
+        });
+    }
+
+    saveEdit() {
+        this.setState((previousState) => {
+            this.props.onItemEdit(previousState.draftTodoItemEntity);
+
+            return {
+                todoItemEntity: Object.assign({}, previousState.draftTodoItemEntity)
+            }
+        });
+        this.enableShowMode();
+    }
+
+    stornoEdit() {
+        this.setState((previousState) => {
+            return {
+                draftTodoItemEntity: Object.assign({}, previousState.todoItemEntity)
+            }
+        });
+        this.enableShowMode();
     }
 
     onNameEdit(e) {
         e.persist();
         this.setState((previousState) => {
-            let todoItemEntity = previousState.todoItemEntity;
-            todoItemEntity.name = e.target.value;
-            return {todoItemEntity: todoItemEntity}
+            let draftTodoItemEntity = previousState.draftTodoItemEntity;
+            draftTodoItemEntity.name = e.target.value;
+            return {draftTodoItemEntity: draftTodoItemEntity}
         });
+    }
 
-        this.props.onItemEdit(this.state.todoItemEntity);
+    renderShowMode() {
+        const showModeRightActions = <div>
+            <IconButton aria-label="star" size="small">
+                <StarBorder />
+            </IconButton>
+        </div>
+
+        return (
+            <MediaCard
+                title={this.state.todoItemEntity.name}
+                description="description description description description description"
+                leftActions=""
+                rightActions={showModeRightActions}
+                contentClicked={this.enableEditMode}
+            />
+        )
+    }
+
+    renderEditMode() {
+        const editModeTitle = <input type="text" onChange={this.onNameEdit} value={this.state.draftTodoItemEntity.name} />
+
+        const editModeLeftActions =
+            <IconButton aria-label="delete" size="small" onClick={() => this.props.onItemDelete(this.state.todoItemEntity)}>
+                <Delete />
+            </IconButton>
+
+        const editModeRightActions =
+            <ButtonGroup size="small">
+                <Button variant="contained" color="default" onClick={this.stornoEdit}>Storno</Button>
+                <Button variant="contained" color="primary" onClick={this.saveEdit}>Uložit</Button>
+            </ButtonGroup>
+
+        return (
+            <MediaCard
+                title={editModeTitle}
+                description="description description description description description"
+                leftActions={editModeLeftActions}
+                rightActions={editModeRightActions}
+            />
+        )
     }
 
     render() {
-        const contentForShowMode =
-            <div>
-                {this.props.todoItemEntity.name}
-                <button onClick={this.toggleMode}>Editovat</button>
-                <button onClick={() => this.props.onItemDelete(this.props.todoItemEntity)}>Smazat</button>
-            </div>
-
-        const contentForEditMode =
-            <div>
-                <input type="text" onChange={this.onNameEdit} value={this.state.todoItemEntity.name} />
-                <button onClick={this.toggleMode}>Konec editace</button>
-            </div>
-
-        return this.state.mode === this.MODE_SHOW ? contentForShowMode : contentForEditMode;
+        return this.state.mode === this.MODE_SHOW ? this.renderShowMode() : this.renderEditMode();
     }
-
 }
 
 export default TodoItem;

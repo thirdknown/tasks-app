@@ -2,6 +2,12 @@ import React from 'react';
 import NewItem from "./NewItem";
 import TodoItem from "./TodoItem";
 import Calls from "./model/Calls";
+import Container from "@material-ui/core/Container";
+import Header from "./Header";
+import Grid from "@material-ui/core/Grid";
+import PaperWrapper from "./PaperWrapper";
+import Search from "./Search";
+import Items from "./Items";
 
 class TodoList extends React.Component {
 
@@ -11,7 +17,6 @@ class TodoList extends React.Component {
         this.onItemCreate = this.onItemCreate.bind(this);
         this.onItemDelete = this.onItemDelete.bind(this);
         this.onItemEdit = this.onItemEdit.bind(this);
-        this.renderItems = this.renderItems.bind(this);
 
         this.state = {
             todoItemEntities: []
@@ -26,32 +31,40 @@ class TodoList extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <NewItem onItemCreate={this.onItemCreate} />
-                {this.renderItems()}
-            </div>
-        )
-    }
-
-    renderItems() {
-
-        let itemList = this.state.todoItemEntities.map((todoItemEntity) => {
-            return this.renderItem(todoItemEntity);
-        });
 
         return (
-            <div>
-                <div>{this.state.todoItemEntities.length > 0 ? 'Aktuální počet položek: ' + this.state.todoItemEntities.length : ''}</div>
-                <ul>{itemList}</ul>
-            </div>
+            <Container maxWidth="lg">
+
+                <br />
+
+                <Grid container spacing={2} justify="space-evenly">
+                    <Grid item xs>
+                        <Header />
+                    </Grid>
+                    <Grid item xs>
+                        <PaperWrapper>
+                            <NewItem onItemCreate={this.onItemCreate} />
+                        </PaperWrapper>
+                    </Grid>
+                    <Grid item xs style={{textAlign: 'center'}}>
+                        <PaperWrapper>
+                            <Search />
+                        </PaperWrapper>
+                    </Grid>
+                </Grid>
+
+                <br />
+
+                <Items todoItemEntities={this.state.todoItemEntities} onItemDelete={this.onItemDelete} onItemEdit={this.onItemEdit} />
+
+            </Container>
         )
     }
 
     renderItem(todoItemEntity) {
         return (
             <li key={todoItemEntity.id}>
-                <TodoItem todoItemEntity={todoItemEntity} onItemDelete={this.onItemDelete} onItemEdit={this.onItemEdit} />
+                <TodoItem todoItemEntity={todoItemEntity} />
             </li>
         )
     }
