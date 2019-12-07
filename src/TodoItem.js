@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import {Delete, StarBorder} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
 import TextField from "@material-ui/core/TextField";
 import MediaCardOwnContent from "./MediaCardOwnContent";
 import Grid from "@material-ui/core/Grid";

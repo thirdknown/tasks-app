@@ -5,7 +5,6 @@ import Container from "@material-ui/core/Container";
 import Items from "./Items";
 import TodosBar from "./TodosBar";
 import NewItem from "./NewItem";
-import {Paper} from "@material-ui/core";
 import PaperWrapper from "./PaperWrapper";
 import Grid from "@material-ui/core/Grid";
 
