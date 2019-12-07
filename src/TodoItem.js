@@ -8,6 +8,7 @@ import Input from "@material-ui/core/Input";
 import TextField from "@material-ui/core/TextField";
 import MediaCardOwnContent from "./MediaCardOwnContent";
 import Grid from "@material-ui/core/Grid";
+import Switch from "@material-ui/core/Switch";
 
 class TodoItem extends React.Component {
 
@@ -30,9 +31,14 @@ class TodoItem extends React.Component {
         this.onDescriptionKeyDown = this.onDescriptionKeyDown.bind(this);
         this.stornoEdit = this.stornoEdit.bind(this);
         this.saveEdit = this.saveEdit.bind(this);
+        this.toggleDone = this.toggleDone.bind(this);
     }
 
     enableEditMode() {
+        if (this.state.todoItemEntity.done === true) {
+            return;
+        }
+
         this.setState((previousState) => {
             return {
                 mode: this.MODE_EDIT,
@@ -103,17 +109,39 @@ class TodoItem extends React.Component {
         }
     }
 
+    toggleDone() {
+        this.setState((previousState) => {
+            let todoItemEntity = previousState.todoItemEntity;
+            todoItemEntity.done = !todoItemEntity.done;
+
+            this.props.onItemEdit(todoItemEntity);
+
+            return {todoItemEntity: todoItemEntity}
+        })
+    }
+
     renderShowMode() {
         const showModeRightActions = <div>
             <IconButton aria-label="star" size="small">
                 <StarBorder />
             </IconButton>
+
+            <Switch
+                checked={this.state.todoItemEntity.done}
+                onChange={this.toggleDone}
+
+                color="primary"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
         </div>
+
+        const title = this.state.todoItemEntity.done === true ? <del>{this.state.todoItemEntity.name}</del> : this.state.todoItemEntity.name;
+        const description = this.state.todoItemEntity.done === true ? <del>{this.state.todoItemEntity.description}</del> : this.state.todoItemEntity.description;
 
         return (
             <MediaCard
-                title={this.state.todoItemEntity.name}
-                description={this.state.todoItemEntity.description}
+                title={title}
+                description={description}
                 leftActions=""
                 rightActions={showModeRightActions}
                 contentClicked={this.enableEditMode}

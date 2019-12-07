@@ -26,7 +26,7 @@ class NewItem extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.onItemCreate(new TodoItemEntity(this.state.text, ''));
+        this.props.onItemCreate(new TodoItemEntity(this.state.text, '', false));
         this.clearInput();
     }
 
