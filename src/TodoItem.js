@@ -21,6 +21,7 @@ class TodoItem extends React.Component {
 
         this.enableEditMode = this.enableEditMode.bind(this);
         this.onNameEdit = this.onNameEdit.bind(this);
+        this.onDescriptionEdit = this.onDescriptionEdit.bind(this);
         this.stornoEdit = this.stornoEdit.bind(this);
         this.saveEdit = this.saveEdit.bind(this);
     }
@@ -69,6 +70,15 @@ class TodoItem extends React.Component {
         });
     }
 
+    onDescriptionEdit(e) {
+        e.persist();
+        this.setState((previousState) => {
+            let draftTodoItemEntity = previousState.draftTodoItemEntity;
+            draftTodoItemEntity.description = e.target.value;
+            return {draftTodoItemEntity: draftTodoItemEntity}
+        });
+    }
+
     renderShowMode() {
         const showModeRightActions = <div>
             <IconButton aria-label="star" size="small">
@@ -79,7 +89,7 @@ class TodoItem extends React.Component {
         return (
             <MediaCard
                 title={this.state.todoItemEntity.name}
-                description="description description description description description"
+                description={this.state.todoItemEntity.description}
                 leftActions=""
                 rightActions={showModeRightActions}
                 contentClicked={this.enableEditMode}
@@ -89,6 +99,7 @@ class TodoItem extends React.Component {
 
     renderEditMode() {
         const editModeTitle = <input type="text" onChange={this.onNameEdit} value={this.state.draftTodoItemEntity.name} />
+        const editModeDesctiption = <input type="text" onChange={this.onDescriptionEdit} value={this.state.draftTodoItemEntity.description} />
 
         const editModeLeftActions =
             <IconButton aria-label="delete" size="small" onClick={() => this.props.onItemDelete(this.state.todoItemEntity)}>
@@ -104,7 +115,7 @@ class TodoItem extends React.Component {
         return (
             <MediaCard
                 title={editModeTitle}
-                description="description description description description description"
+                description={editModeDesctiption}
                 leftActions={editModeLeftActions}
                 rightActions={editModeRightActions}
             />
