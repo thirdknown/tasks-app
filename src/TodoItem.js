@@ -25,7 +25,9 @@ class TodoItem extends React.Component {
 
         this.enableEditMode = this.enableEditMode.bind(this);
         this.onNameEdit = this.onNameEdit.bind(this);
+        this.onNameKeyDown = this.onNameKeyDown.bind(this);
         this.onDescriptionEdit = this.onDescriptionEdit.bind(this);
+        this.onDescriptionKeyDown = this.onDescriptionKeyDown.bind(this);
         this.stornoEdit = this.stornoEdit.bind(this);
         this.saveEdit = this.saveEdit.bind(this);
     }
@@ -74,6 +76,18 @@ class TodoItem extends React.Component {
         });
     }
 
+    onNameKeyDown(e) {
+        switch (e.key) {
+            case 'Enter':
+                this.saveEdit();
+                break;
+            case 'Escape':
+                this.stornoEdit();
+                break;
+            default: break
+        }
+    }
+
     onDescriptionEdit(e) {
         e.persist();
         this.setState((previousState) => {
@@ -81,6 +95,12 @@ class TodoItem extends React.Component {
             draftTodoItemEntity.description = e.target.value;
             return {draftTodoItemEntity: draftTodoItemEntity}
         });
+    }
+
+    onDescriptionKeyDown(e) {
+        if (e.key === 'Escape') {
+            this.stornoEdit();
+        }
     }
 
     renderShowMode() {
@@ -104,10 +124,24 @@ class TodoItem extends React.Component {
     renderEditMode() {
         const content = <Grid container spacing={2}>
             <Grid item xs={12}>
-                <TextField variant="outlined" fullWidth onChange={this.onNameEdit} value={this.state.draftTodoItemEntity.name} />
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    onChange={this.onNameEdit}
+                    onKeyDown={this.onNameKeyDown}
+                    value={this.state.draftTodoItemEntity.name}
+                />
             </Grid>
             <Grid item xs={12}>
-                <TextField multiline rows={4} fullWidth variant="outlined" onChange={this.onDescriptionEdit} value={this.state.draftTodoItemEntity.description} />
+                <TextField
+                    multiline
+                    rows={4}
+                    fullWidth
+                    variant="outlined"
+                    onChange={this.onDescriptionEdit}
+                    onKeyDown={this.onDescriptionKeyDown}
+                    value={this.state.draftTodoItemEntity.description}
+                />
             </Grid>
         </Grid>
 
