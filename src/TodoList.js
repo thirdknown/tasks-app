@@ -1,13 +1,13 @@
 import React from 'react';
-import NewItem from "./NewItem";
 import TodoItem from "./TodoItem";
 import Calls from "./model/Calls";
 import Container from "@material-ui/core/Container";
-import Header from "./Header";
-import Grid from "@material-ui/core/Grid";
-import PaperWrapper from "./PaperWrapper";
-import Search from "./Search";
 import Items from "./Items";
+import TodosBar from "./TodosBar";
+import NewItem from "./NewItem";
+import {Paper} from "@material-ui/core";
+import PaperWrapper from "./PaperWrapper";
+import Grid from "@material-ui/core/Grid";
 
 class TodoList extends React.Component {
 
@@ -33,31 +33,31 @@ class TodoList extends React.Component {
     render() {
 
         return (
-            <Container maxWidth="lg">
 
-                <br />
+            <div>
+                <TodosBar />
 
-                <Grid container spacing={2} justify="space-evenly">
-                    <Grid item xs>
-                        <Header />
+                <Container maxWidth="lg">
+
+                    <br /><br />
+
+                    <Grid container justify="flex-end">
+                        <Grid xs={12} sm={9} md={6} lg={4} item>
+                            <PaperWrapper>
+                                <NewItem onItemCreate={this.onItemCreate} />
+                            </PaperWrapper>
+                        </Grid>
                     </Grid>
-                    <Grid item xs>
-                        <PaperWrapper>
-                            <NewItem onItemCreate={this.onItemCreate} />
-                        </PaperWrapper>
-                    </Grid>
-                    <Grid item xs style={{textAlign: 'center'}}>
-                        <PaperWrapper>
-                            <Search />
-                        </PaperWrapper>
-                    </Grid>
-                </Grid>
 
-                <br />
+                    <br /><br />
 
-                <Items todoItemEntities={this.state.todoItemEntities} onItemDelete={this.onItemDelete} onItemEdit={this.onItemEdit} />
+                    <Items todoItemEntities={this.state.todoItemEntities} onItemDelete={this.onItemDelete} onItemEdit={this.onItemEdit} />
 
-            </Container>
+                </Container>
+
+                <br /><br />
+
+            </div>
         )
     }
 
@@ -73,8 +73,8 @@ class TodoList extends React.Component {
         todoItemEntity = await Calls.createShoppingItem(todoItemEntity);
 
         this.setState((previousState) => {
-            previousState.todoItemEntities.push(todoItemEntity);
-            return {todoItemEntities: previousState.todoItemEntities}
+            const todoItemEntities = [todoItemEntity, ...previousState.todoItemEntities];
+            return {todoItemEntities: todoItemEntities}
         });
     }
 

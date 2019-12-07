@@ -46,7 +46,7 @@ class NewItem extends React.Component {
                     </Box>
                     <Grid />
                     <Box justifyContent="center" m={1}>
-                        <Button type="submit" variant="contained" color="primary">Uložit</Button>
+                        <Button type="submit" variant="contained" color="primary">Vytvořit</Button>
                     </Box>
                 </Grid>
             </form>
