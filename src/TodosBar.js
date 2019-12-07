@@ -6,8 +6,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Checkbox from "@material-ui/core/Checkbox";
-import {Clear, Star, StarBorder, YoutubeSearchedFor} from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
+import {Clear} from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
