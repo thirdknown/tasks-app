@@ -22,7 +22,7 @@ class TodoList extends React.Component {
         this.state = {
             originalTodoItemEntities: [],
             todoItemEntities: [],
-            searchEntity: new SearchEntity('', null, null)
+            searchEntity: new SearchEntity('', false, null)
         };
     }
 
