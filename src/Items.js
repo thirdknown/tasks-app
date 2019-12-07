@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 
 const Items = (props) => {
     return (
-        <Grid container spacing={2} justify="center">
+        <Grid container spacing={2} justify="flex-start">
             {props.todoItemEntities.map(todoItemEntity => (
                 <Grid item xs={12} sm={6} md={4} key={todoItemEntity.id}>
                     <TodoItem todoItemEntity={todoItemEntity} onItemDelete={props.onItemDelete} onItemEdit={props.onItemEdit} />
