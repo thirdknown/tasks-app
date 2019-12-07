@@ -29,4 +29,10 @@ export default class SearchEntity {
     setNextValueForStarred() {
         this.starred = this.getThreeStateNextValue(this.starred);
     }
+
+    reset() {
+        this.text = '';
+        this.done = null;
+        this.starred = null;
+    }
 }

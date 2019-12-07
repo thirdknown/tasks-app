@@ -77,8 +77,12 @@ class TodoList extends React.Component {
         todoItemEntity = await Calls.createShoppingItem(todoItemEntity);
 
         this.setState((previousState) => {
+            const originalTodoItemEntities = [todoItemEntity, ...previousState.originalTodoItemEntities];
             const todoItemEntities = [todoItemEntity, ...previousState.todoItemEntities];
-            return {todoItemEntities: todoItemEntities}
+            return {
+                originalTodoItemEntities: originalTodoItemEntities,
+                todoItemEntities: todoItemEntities
+            }
         });
     }
 

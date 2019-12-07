@@ -6,6 +6,9 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Checkbox from "@material-ui/core/Checkbox";
+import {Clear, Star, StarBorder, YoutubeSearchedFor} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -114,6 +117,12 @@ export default function TodosBar(props) {
         return <Checkbox {...checkboxProps} />
     }
 
+    const onSearchReset = () => {
+        let searchEntity = props.searchEntity;
+        searchEntity.reset();
+        props.onSearch(searchEntity);
+    }
+
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -149,6 +158,14 @@ export default function TodosBar(props) {
                     <div>
                         <span>S hvězdou: </span>
                         {getStarredCheckbox()}
+                    </div>
+
+                    <div className={classes.gap} />
+
+                    <div>
+                        <Button variant="contained" size="small" color="secondary" onClick={onSearchReset}>
+                            <Clear fontSize="small" />
+                        </Button>
                     </div>
 
                 </Toolbar>
