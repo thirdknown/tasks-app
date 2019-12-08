@@ -8,6 +8,7 @@ import NewItem from "./NewItem";
 import PaperWrapper from "./PaperWrapper";
 import Grid from "@material-ui/core/Grid";
 import SearchEntity from "./model/SearchEntity";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 class TodoList extends React.Component {
 
@@ -22,7 +23,8 @@ class TodoList extends React.Component {
         this.state = {
             originalTodoItemEntities: [],
             todoItemEntities: [],
-            searchEntity: new SearchEntity('', false, null)
+            searchEntity: new SearchEntity('', false, null),
+            showProgress: false
         };
     }
 
@@ -34,11 +36,31 @@ class TodoList extends React.Component {
         });
     }
 
+    enableProgressBar() {
+        this.setState({showProgress: true});
+    }
+
+    disableProgressBar() {
+        this.setState({showProgress: false});
+    }
+
+    renderProgress() {
+        let progress = <div style={{height: '4px', backgroundColor: '#3f51b5'}}></div>;
+        if (this.state.showProgress === true) {
+            progress = <LinearProgress color="secondary" />
+        }
+
+        return progress;
+    }
+
     render() {
 
         return (
 
             <div>
+
+                {this.renderProgress()}
+
                 <TodosBar searchEntity={this.state.searchEntity} onSearch={this.onSearch} />
 
                 <Container maxWidth="lg">
@@ -74,6 +96,8 @@ class TodoList extends React.Component {
     }
 
     async onItemCreate(todoItemEntity) {
+        this.enableProgressBar();
+
         todoItemEntity = await Calls.createShoppingItem(todoItemEntity);
 
         this.setState((previousState) => {
@@ -84,9 +108,12 @@ class TodoList extends React.Component {
                 todoItemEntities: todoItemEntities
             }
         });
+
+        this.disableProgressBar();
     }
 
     async onItemDelete(todoItemEntityForDelete) {
+        this.enableProgressBar();
 
         todoItemEntityForDelete = await Calls.deleteShoppingItem(todoItemEntityForDelete);
 
@@ -94,14 +121,19 @@ class TodoList extends React.Component {
             return {todoItemEntities: previousState.todoItemEntities.filter((todoItemEntity) => {
                 return todoItemEntity.id !== todoItemEntityForDelete.id;
             })}
-        })
+        });
+
+        this.disableProgressBar();
     }
 
     async onItemEdit(todoItemEntity) {
-        todoItemEntity = await Calls.updateShoppingItem(todoItemEntity);
+        this.enableProgressBar();
+        await Calls.updateShoppingItem(todoItemEntity);
+        this.disableProgressBar();
     }
 
     onSearch(searchEntity) {
+        this.enableProgressBar();
         this.setState({
             searchEntity: searchEntity
         }, () => {
@@ -131,6 +163,7 @@ class TodoList extends React.Component {
                 todoItemEntities: filteredTodoItemEntities
             });
         });
+        this.disableProgressBar();
     }
 
 }
