@@ -32,7 +32,7 @@ export default class SearchEntity {
 
     reset() {
         this.text = '';
-        this.done = false;
+        this.done = null;
         this.starred = null;
     }
 }
